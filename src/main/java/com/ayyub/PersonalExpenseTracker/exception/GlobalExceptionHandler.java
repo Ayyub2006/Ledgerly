@@ -52,4 +52,16 @@ public class GlobalExceptionHandler {
 
 	    return new ResponseEntity<>(response, HttpStatus.CONFLICT);
 	}
+	
+	@ExceptionHandler(ExpenseNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleExpenseNotFound(ExpenseNotFoundException ex){
+		
+		ErrorResponse response = ErrorResponse.builder()
+				.timestamp(LocalDateTime.now())
+				.status(HttpStatus.NOT_FOUND.value())
+				.message(ex.getMessage())
+				.build();
+		
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
 }
