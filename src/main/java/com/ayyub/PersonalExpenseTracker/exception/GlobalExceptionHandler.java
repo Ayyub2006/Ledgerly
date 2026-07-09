@@ -76,4 +76,28 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	public ResponseEntity<ErrorResponse> handleUserAlreadyExists(UserAlreadyExistsException ex){
+		
+		ErrorResponse response = ErrorResponse.builder()
+				.timestamp(LocalDateTime.now())
+				.status(HttpStatus.CONFLICT.value())
+				.message(ex.getMessage())
+				.build();
+		
+		return new ResponseEntity<> (response, HttpStatus.CONFLICT);
+	}
+	
+	@ExceptionHandler(InvalidCredentialsException.class)
+	public ResponseEntity<ErrorResponse> handleInvalidCredentials(InvalidCredentialsException ex){
+		
+		ErrorResponse response = ErrorResponse.builder()
+				.timestamp(LocalDateTime.now())
+				.status(HttpStatus.UNAUTHORIZED.value())
+				.message(ex.getMessage())
+				.build();
+		
+		return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+	}
 }
