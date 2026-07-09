@@ -64,4 +64,16 @@ public class GlobalExceptionHandler {
 		
 		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
+	
+	@ExceptionHandler(IncomeNotFoundException.class)
+	public ResponseEntity<ErrorResponse> handleExceptionNotFound(IncomeNotFoundException ex){
+		
+		ErrorResponse response = ErrorResponse.builder()
+				.timestamp(LocalDateTime.now())
+				.status(HttpStatus.NOT_FOUND.value())
+				.message(ex.getMessage())
+				.build();
+		
+		return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
 }
