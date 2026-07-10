@@ -1,15 +1,19 @@
 package com.ayyub.PersonalExpenseTracker.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.ayyub.PersonalExpenseTracker.entity.Category;
+import com.ayyub.PersonalExpenseTracker.entity.User;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>{
 	
-	Optional<Category> findByName(String name);
+	List<Category> findByUser(User user);
 	
-	boolean existsByName(String name);
+	Optional<Category> findByIdAndUser(Long id, User user);
+	
+	boolean existsByNameAndUser(String name, User user);
 
 }
