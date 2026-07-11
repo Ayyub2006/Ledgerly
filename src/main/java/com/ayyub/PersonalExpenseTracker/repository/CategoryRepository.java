@@ -10,10 +10,13 @@ import com.ayyub.PersonalExpenseTracker.entity.User;
 
 public interface CategoryRepository extends JpaRepository<Category, Long>{
 	
+	
 	List<Category> findByUser(User user);
 	
 	Optional<Category> findByIdAndUser(Long id, User user);
 	
 	boolean existsByNameAndUser(String name, User user);
+	
+	Long countByUser(User user);
 
 }
