@@ -2,6 +2,10 @@ package com.ayyub.PersonalExpenseTracker.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.ayyub.PersonalExpenseTracker.dto.IncomeRequest;
@@ -35,8 +39,6 @@ public class IncomeService {
 	public Income createIncome(IncomeRequest request) {
 		User user = securityUtil.getLoggedInUser();
 		
-//		Category category = categoryRepository.findById(request.getCategoryId())
-//				.orElseThrow(() -> new CategoryNotFoundException("Category Not Found"));
 		
 		Income income = new Income();
 		
@@ -89,4 +91,32 @@ public class IncomeService {
 		
 		incomeRepository.delete(income);
 	}
+	
+	public Page<Income> getIncome(int page,
+			int size,
+			String sortBy,
+			String direction){
+		User loggedInUser = securityUtil.getLoggedInUser();
+		
+		Sort sort = direction.equalsIgnoreCase("desc")
+				? Sort.by(sortBy).descending()
+						:Sort.by(sortBy).ascending();
+		
+		Pageable pageable = PageRequest.of(page, size, sort);
+		
+		return incomeRepository.findByUser(loggedInUser, pageable);
+	}
+	
+	public Page<Income> searchIncome(String keyword,
+			int page,
+			int size) {
+		User loggedInUser = securityUtil.getLoggedInUser();
+		
+		Pageable pageable = PageRequest.of(page, size);
+		
+		return incomeRepository.findByUserAndTitleContainingIgnoreCase(loggedInUser, keyword, pageable);
+	}
+	
+	
+
 }
