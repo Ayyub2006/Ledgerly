@@ -17,10 +17,16 @@ import com.ayyub.PersonalExpenseTracker.dto.CategoryRequest;
 import com.ayyub.PersonalExpenseTracker.entity.Category;
 import com.ayyub.PersonalExpenseTracker.service.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/categories")
+@Tag(
+	    name = "Category Management",
+	    description = "Manage expense categories"
+	)
 public class CategoryController {
 
 	private final CategoryService categoryService;
@@ -30,12 +36,14 @@ public class CategoryController {
 	}
 	
 	@PostMapping
+	@Operation(summary = "Create a new category")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Category createCategory(@Valid @RequestBody CategoryRequest request) {
 		return categoryService.createCategory(request);
 	}
 	
 	@GetMapping
+	@Operation(summary = "Get all category")
 	public List<Category> getAllCategories(){
 		return categoryService.getAllCategories();
 	}
@@ -46,11 +54,13 @@ public class CategoryController {
 	}
 	
 	@PutMapping("/{id}")
+	@Operation(summary = "Update category")
 	public Category updateCategory(@PathVariable Long id,@Valid @RequestBody CategoryRequest request) {
 	return categoryService.updateCategory(id, request);
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete category")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteCategory(@PathVariable Long id) {
 		categoryService.deleteCategory(id);

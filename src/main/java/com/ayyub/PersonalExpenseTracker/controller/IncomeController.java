@@ -20,10 +20,16 @@ import com.ayyub.PersonalExpenseTracker.dto.IncomeRequest;
 import com.ayyub.PersonalExpenseTracker.entity.Income;
 import com.ayyub.PersonalExpenseTracker.service.IncomeService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/income")
+@Tag(
+	    name = "Income Management",
+	    description = "Manage all income related APIs"
+	)
 public class IncomeController {
 	
 	private final IncomeService incomeService;
@@ -33,12 +39,14 @@ public class IncomeController {
 	}
 	
 	@PostMapping
+	@Operation(summary = "Create a new income")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Income createIncome(@Valid @RequestBody IncomeRequest request) {
 		return incomeService.createIncome(request);
 	}
 	
 	@GetMapping
+	@Operation(summary = "Get all income")
 	public List<Income> getALLIncomes(){
 		return incomeService.getAllIncome();
 	}
@@ -49,11 +57,13 @@ public class IncomeController {
 	}
 	
 	@PutMapping("/{id}")
+	@Operation(summary = "Update income")
 	public Income updateIncome(@PathVariable Long id, @Valid @RequestBody IncomeRequest request) {
 		return incomeService.updateIncome(id, request);
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete income")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteIncome(@PathVariable Long id) {
 		incomeService.deleteIncome(id);

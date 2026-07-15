@@ -20,10 +20,16 @@ import com.ayyub.PersonalExpenseTracker.dto.ExpenseRequest;
 import com.ayyub.PersonalExpenseTracker.entity.Expense;
 import com.ayyub.PersonalExpenseTracker.service.ExpenseService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/expenses")
+@Tag(
+	    name = "Expense Management",
+	    description = "Manage all expense related APIs"
+	)
 public class ExpenseController {
 	
 	private final ExpenseService expenseService;
@@ -33,12 +39,14 @@ public class ExpenseController {
 	}
 	
 	@PostMapping
+	@Operation(summary = "Create a new expense")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Expense createExpese(@Valid @RequestBody ExpenseRequest request) {
 		return expenseService.createExpense(request);
 	}
 	
 	@GetMapping
+	@Operation(summary = "Get all expenses")
 	public List<Expense> getAllExpenses(){
 		return expenseService.getAllExpenses();
 	}
@@ -49,11 +57,13 @@ public class ExpenseController {
 	}
 	
 	@PutMapping("/{id}")
+	@Operation(summary = "Update expense")
 	public Expense updateExpese(@PathVariable Long id, @Valid @RequestBody ExpenseRequest request) {
 		return expenseService.updateExpense(id, request);
 	}
 	
 	@DeleteMapping("/{id}")
+	@Operation(summary = "Delete expense")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void deleteExpense(@PathVariable Long id) {
 		expenseService.deleteExpense(id);
