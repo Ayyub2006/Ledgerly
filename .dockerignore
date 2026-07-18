@@ -1,0 +1,10 @@
+target
+.git
+.gitignore
+.idea
+.settings
+.project
+.classpath
+bin
+frontend
+README.md

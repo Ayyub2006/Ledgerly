@@ -1,0 +1,44 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: ledgerly-mysql
+    restart: always
+
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: personal_expense_tracker
+      MYSQL_USER: ayyub
+      MYSQL_PASSWORD: password
+
+    ports:
+      - "3307:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  app:
+    build: .
+    container_name: expense-tracker
+    restart: always
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+    ports:
+      - "8084:8084"
+
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/personal_expense_tracker
+      SPRING_DATASOURCE_USERNAME: ayyub
+      SPRING_DATASOURCE_PASSWORD: password
+
+volumes:
+  mysql-data:
